@@ -101,7 +101,7 @@ module gridfinityBaseplate(grid_size_bases, length, min_size_mm, sp, hole_option
     assert(grid_size_bases.y > 0 || min_size_mm.y > 0,
         "Must have positive y grid amount!");
 
-    additional_height = calculate_offset(sp, hole_options[1], sh);
+    additional_height = calculate_offset(sp, hole_options[2], sh);
 
     // Final height of the baseplate. In mm.
     baseplate_height_mm = additional_height + BASEPLATE_HEIGHT;
@@ -228,7 +228,7 @@ function calculate_offset(style_plate, enable_magnet, style_hole) =
 function calculate_offset_skeletonized(enable_magnet, style_hole) =
     h_skel + (enable_magnet ? MAGNET_HOLE_DEPTH : 0) +
     (
-        style_hole==0 ? d_screw :
+        style_hole==0 ? 0 :
         style_hole==1 ? BASEPLATE_SCREW_COUNTERSINK_ADDITIONAL_RADIUS : // Only works because countersink is at 45 degree angle!
         BASEPLATE_SCREW_COUNTERBORE_HEIGHT
     );
