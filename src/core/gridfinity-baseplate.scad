@@ -63,6 +63,12 @@ BASEPLATE_INNER_RADIUS = BASEPLATE_OUTER_RADIUS - _BASEPLATE_PROFILE[3].x;
  */
 BASEPLATE_INNER_DIAMETER = BASEPLATE_INNER_RADIUS * 2;
 
+/**
+ * @Summary Width of flat on the top of baseplate walls.
+ * @Details Allows for better printing and full seating for multi-unit modules
+ */
+ BASEPLATE_EDGE_CHAMFER = 0.5;
+
 // ****************************************
 // Implementation Functions
 // ****************************************
@@ -133,11 +139,18 @@ module baseplate_cutter(size=BASEPLATE_DIMENSIONS, height=BASEPLATE_HEIGHT) {
         ];
     union(){
         sweep_rounded(inner_dimensions){
-            _baseplate_cutter_polygon(height);
+            _baseplate_cutter_polygon(height + BASEPLATE_EDGE_CHAMFER / 2);
         }
 
         translate([0, 0, height/2])
         cube(cube_dimensions, center = true);
+
+        translate([0, 0, height - BASEPLATE_EDGE_CHAMFER / 4])
+        cube([
+            BASEPLATE_DIMENSIONS.x + 2 * TOLLERANCE,
+            BASEPLATE_DIMENSIONS.y + 2 * TOLLERANCE,
+            BASEPLATE_EDGE_CHAMFER / 2,
+        ], center = true);
     }
 }
 
